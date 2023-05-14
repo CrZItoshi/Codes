@@ -4,8 +4,7 @@
 typedef struct
 {
     char nameAnimals[25], medic[25];
-    int data , medicQuant[50];
-    
+    int data, medicQuant[50];
 } animals;
 
 typedef struct
@@ -13,94 +12,115 @@ typedef struct
     char name[25];
 } Pessoa;
 
+void leituraArquivo(int *argc, FILE **file, char const **argv, int *totalAnimal);
+void slotAnimals(animals **animais, int *totalAnimal, int *i, FILE **file, Pessoa **User);
+void slotRelatorio(FILE **relatorio ,animals **animais, int *i, Pessoa **User , int *j);
+
 int main(int argc, char const *argv[])
 {
-    // localizando e recebendo o arquivo por parâmetros do terminal
-    if (argc < 2)
-    {
+    // Declação de variáveis
+    FILE *file;
+    animals *animais;
+    FILE *relatorio;
+    Pessoa *User;
+    int totalAnimal;
+    int i = 0;
+    int j = 0;
 
+    //uso das funções
+    leituraArquivo(&argc, &file, &argv[1], &totalAnimal);
+    slotAnimals(&animais, &totalAnimal, &i , &file , &User);
+    slotRelatorio(&relatorio ,&animais,&i,&User,&j);
+
+    //fim da execução 
+    fclose(file);
+    fclose(relatorio);
+    free(animais);
+    free(User);
+    return 0;
+}
+
+void leituraArquivo(int *argc, FILE **file, char const **argv, int *totalAnimal)
+{
+    // localizando e recebendo o arquivo por parâmetros do terminal
+    if (*argc < 2)
+    {
         printf("Erro ao encontrar o arquivo\n");
     }
     printf("Sucesso ao encontrar o arquivo\n");
     printf("Sucesso ao abrir o arquivo\n");
 
     // Guardando todo o arquivo em file
-    FILE *file;
-    file = fopen(argv[1], "r");
-    if (file == NULL)
-    {
 
+    *file = fopen(*argv, "r");
+    if (*file == NULL)
+    {
         printf("Erro ao encontrar ao abrir arquivo\n");
-        return -1;
     }
 
     // lendo a primeira linha.
-    int totalAnimal;
-    fscanf(file, "%d", &totalAnimal);
-    printf("%d\n", totalAnimal);
 
-    animals *animais;
+    fscanf(*file, "%d", &*totalAnimal);
+    printf("%d\n", *totalAnimal);
+}
 
-    animais = malloc(sizeof(animals) * totalAnimal);
+void slotAnimals(animals **animais, int *totalAnimal, int *i, FILE **file, Pessoa **User)
+{
+    *animais = malloc(sizeof(animals) * (*totalAnimal));
     printf("apos malloc\n");
 
-    if (animais == NULL)
+    if (*animais == NULL)
     {
         printf("Erro de memoria\n");
-        return -1;
+        exit(0);
     }
 
-    Pessoa *User;
-    User = malloc(sizeof(Pessoa) * totalAnimal);
-    if (User == NULL)
+    *User = malloc(sizeof(Pessoa) * (*totalAnimal));
+    
+    if (*User == NULL)
     {
         printf("Erro de memoria na pessoa\n");
-        return -1;
+        exit(0);
     }
 
-    int i = 0;
-    
-    while (!feof(file))
+    while (!feof(*file))
     {
-        fscanf(file, " %s", &animais[i].nameAnimals);
+        fscanf(*file, " %s", &(*animais)[*i].nameAnimals);
 
-        fscanf(file, " %s", &animais[i].medic);
+        fscanf(*file, " %s", &(*animais)[*i].medic);
 
-        if (feof(file))
+        if (feof(*file))
         {
             break;
         }
-        fscanf(file, " %d", &animais[i].data);
-        fscanf(file, "%s", User[i].name);
+        fscanf(*file, " %i", &(*animais)[*i].data);
+        fscanf(*file, " %s", (*User)[*i].name);
 
-        printf("Nome Animal: %s\t", animais[i].nameAnimals);
-        printf("Nome Medicamento: %s \t", animais[i].medic);
-        printf("Data Medicamento: %d \t", animais[i].data);
-        printf("Nome da Pessoa: %s\n", User[i].name);
 
-        i++;
+        printf("Nome Animal: %s\t", (*animais)[*i].nameAnimals);
+        printf("Nome Medicamento: %s \t", (*animais)[*i].medic);
+        printf("Data Medicamento: %d \t", (*animais)[*i].data);
+        printf("Nome da Pessoa: %s\n", (*User)[*i].name);
+        printf("qnt dados na func: %d\n", *i);
+        (*i)++;
     }
-    printf("qnt daddos: %d\n", i);
+
+    printf("qnt dados: %d\n", *i);
 
     printf("apos funcoes \n");
+}
 
-    FILE *relatorio;
-    relatorio = fopen("tabela.txt" , "w");
+void slotRelatorio(FILE **relatorio ,animals **animais, int *i, Pessoa **User , int *j){
 
-    int j = 0;
-    
-    for ( j = 0; j < i; j++)
+    *relatorio = fopen("tabela.txt", "w");
+    printf("%i\n" , *i);
+
+    for (*j = 0; *j < *i; (*j)++)
     {
-        printf("gerando relatorio..");
-        fprintf(relatorio, "Animal: %s\t", &animais[j].nameAnimals);
-        fprintf(relatorio, "Medicamento: %s\t", &animais[j].medic);
-        fprintf(relatorio, "Data: %d\t", &animais[j].data);
-        fprintf(relatorio, "Pessoa: %s\n", &User[j].name);
+        fprintf(*relatorio, "Animal: %s\t", (*animais)[*j].nameAnimals);
+        fprintf(*relatorio, "Medicamento: %s\t", (*animais)[*j].medic);
+        fprintf(*relatorio, "Data: %d\t", (*animais)[*j].data);
+        fprintf(*relatorio, "Pessoa: %s\n", (*User)[*j].name);
+        printf("gerando relatorio..\n");
     }
-    
-    fclose(file);
-    fclose(relatorio);
-    free(animais);
-    free(User);
-    return 0;
 }
