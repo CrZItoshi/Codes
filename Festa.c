@@ -15,7 +15,7 @@ void slotRelatorio(FILE **relatorio , int *j , int *i , Pessoas **usuario , floa
 
 int main(int argc, char const *argv[])
 {
-    // declarar variável
+    
     FILE *file;
     FILE *relatorio;
     int totalPessoas;
@@ -36,7 +36,7 @@ int main(int argc, char const *argv[])
     fclose(file);
     return 0;
 }
-// recebe e abre aquivo
+
 void slotArquivo(int *argc, char const **argv , FILE **file , int *totalPessoas ){
     if (*argc < 2)
     {
@@ -58,14 +58,14 @@ void slotArquivo(int *argc, char const **argv , FILE **file , int *totalPessoas 
 
 void slotUsuario(Pessoas **usuario , int *totalPessoas, FILE **file , int *i)
 {
-    // cria espaço de usuário
+    
     *usuario = malloc(sizeof(Pessoas) * (*totalPessoas));
     if (*usuario == NULL)
     {
         printf("Erro ao alocar memoria ao usuario\n");
     }
 
-     // percorre o arquivo até uma linha vazia
+     
     while (!feof(*file))
     {
         fscanf(*file, "%s", (*usuario)[*i].name);
