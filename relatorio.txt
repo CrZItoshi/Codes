@@ -1,0 +1,2 @@
+Nome: maicon Carne: 1.50kg Bebida: 2.00l Banda: 50.00 Aluguel: 70.00 
+Total Carne: 3.00kg Total Bebida: 4.00l Total Banda: 100.00 Total Aluguel: 140.00 

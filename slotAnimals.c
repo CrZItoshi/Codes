@@ -18,7 +18,7 @@ void slotRelatorio(FILE **relatorio ,animals **animais, int *i, Pessoa **User , 
 
 int main(int argc, char const *argv[])
 {
-    // Declação de variáveis
+    
     FILE *file;
     animals *animais;
     FILE *relatorio;
@@ -27,12 +27,12 @@ int main(int argc, char const *argv[])
     int i = 0;
     int j = 0;
 
-    //uso das funções
+    
     leituraArquivo(&argc, &file, &argv[1], &totalAnimal);
     slotAnimals(&animais, &totalAnimal, &i , &file , &User);
     slotRelatorio(&relatorio ,&animais,&i,&User,&j);
 
-    //fim da execução 
+    
     fclose(file);
     fclose(relatorio);
     free(animais);
@@ -42,7 +42,7 @@ int main(int argc, char const *argv[])
 
 void leituraArquivo(int *argc, FILE **file, char const **argv, int *totalAnimal)
 {
-    // localizando e recebendo o arquivo por parâmetros do terminal
+    
     if (*argc < 2)
     {
         printf("Erro ao encontrar o arquivo\n");
@@ -50,7 +50,7 @@ void leituraArquivo(int *argc, FILE **file, char const **argv, int *totalAnimal)
     printf("Sucesso ao encontrar o arquivo\n");
     printf("Sucesso ao abrir o arquivo\n");
 
-    // Guardando todo o arquivo em file
+    
 
     *file = fopen(*argv, "r");
     if (*file == NULL)
@@ -58,7 +58,7 @@ void leituraArquivo(int *argc, FILE **file, char const **argv, int *totalAnimal)
         printf("Erro ao encontrar ao abrir arquivo\n");
     }
 
-    // lendo a primeira linha.
+    
 
     fscanf(*file, "%d", &*totalAnimal);
     printf("%d\n", *totalAnimal);
